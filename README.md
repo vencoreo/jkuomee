@@ -4,7 +4,7 @@ https://discord.gg/5RnEzmaFbY
 
 https://discord.gg/j5tYE2nnxZ
 
-https://discord.gg/8gfSY3ZvqM
+https://discord.com/invite/8gfSY3ZvqM
 
 https://discord.gg/N4TPT2aRzP
 
