@@ -1,15 +1,14 @@
-https://discord.com/invite/Ye
+https://discord.gg/X9X5fde7fA
 
-https://discord.gg/CpFHqk3mvT
+https://discord.gg/5RnEzmaFbY
+https://discord.gg/j5tYE2nnxZ
 
-https://discord.gg/DMQRm7CwrG
+https://discord.gg/8gfSY3ZvqM
 
-https://discord.gg/VRwhFhNtxN
+https://discord.gg/N4TPT2aRzP
 
-https://discord.gg/RrKNw9TAZq
+https://discord.gg/d2TuHYnYsA
 
-https://discord.gg/H4jsGjBggT
+https://discord.gg/NfNRUvZWvR
 
-https://discord.gg/vkh2fyTxxY
-
-https://discord.gg/qfuSGBD9qn
+https://discord.gg/cx3caYrKSR
