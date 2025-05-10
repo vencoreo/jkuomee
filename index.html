@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Stealth Init</title>
+  <title>Dynamic Terminal</title>
   <style>
     html, body {
       margin: 0;
@@ -10,100 +10,185 @@
       overflow: hidden;
       font-family: monospace;
       height: 100%;
-      background: black;
-      color: #00ff66;
     }
-    canvas#matrix {
+
+    canvas#matrixCanvas {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       width: 100%;
       height: 100%;
       z-index: 0;
     }
-    #terminal {
+
+    #console {
       position: relative;
       z-index: 1;
       padding: 20px;
-      font-size: 15px;
-      white-space: pre-wrap;
+      white-space: pre;
+      font-size: 16px;
+      height: 100vh;
+      overflow-y: auto;
+      color: #00ff66;
     }
+
   </style>
 </head>
 <body>
-  <canvas id="matrix"></canvas>
-  <div id="terminal"></div>
-  <audio id="beep" src="https://www.soundjay.com/button/sounds/beep-01a.mp3" preload="auto"></audio>
+  <canvas id="matrixCanvas"></canvas>
+  <div id="console"></div>
+
+  <audio id="buzz" loop autoplay muted>
+    <source src="https://www.soundjay.com/button/sounds/beep-01a.mp3" type="audio/mpeg">
+  </audio>
+
   <script>
-    const canvas = document.getElementById("matrix");
-    const ctx = canvas.getContext("2d");
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+
+    const letters = "アカサタナハマヤラガザダバABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split("");
     const fontSize = 14;
     const columns = canvas.width / fontSize;
-    const drops = Array(Math.floor(columns)).fill(1);
-    const chars = "田由甲申甴电男ABCDEF0123456789ﾊﾐﾋｰｳｼ".split("");
-    function draw() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#0f0";
-      ctx.font = fontSize + "px monospace";
-      drops.forEach((y, x) => {
-        const text = chars[Math.floor(Math.random() * chars.length)];
-        ctx.fillText(text, x * fontSize, y * fontSize);
-        if (y * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[x] = 0;
-        }
-        drops[x]++;
-      });
-      requestAnimationFrame(draw);
-    }
-    draw();
+    const drops = Array.from({ length: columns }, () => Math.random() * canvas.height);
 
-    const messages = [
-      ">> Initializing HyperTunnel...",
-      ">> Spoofing fingerprint vector...",
-      ">> Syncing geolocation to Egypt",
-      ">> Injecting layered obfuscation",
-      ">> Shuffling WebGL fingerprint...",
-      ">> Overriding browser entropy",
-      ">> Encrypting session metadata",
-      ">> Discord spoof mode: ENABLED",
-      ">> AES Tunnel connected.",
-      ">> Deploying stealth payload..."
+    const colors = ["#00ff66", "#ff0066", "#00ccff", "#ffcc00", "#66ff66"];
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    const backgroundColors = ["#1b1b1b", "#0a0a0a", "#141414", "#333333", "#222222"];
+    const randomBackgroundColor = backgroundColors[Math.floor(Math.random() * backgroundColors.length)];
+
+    const fakeMessages = [
+      "Initializing ShadowProtocol...",
+      "Spoofing User-Agent: Edge/122.0.0",
+      "Faking GPS: Cairo, Egypt",
+      "Hooking navigator.webdriver = false",
+      "Fingerprint obfuscation initialized.",
+      "Masking WebGL Parameters...",
+      "Bypassing TLS SNI check...",
+      "Encoding canvas fingerprint...",
+      "Patching DOM anomalies...",
+      "Spoofing timezone: Africa/Cairo",
+      "Overriding language headers...",
+      "Collecting session cookies...",
+      "Injecting cloaking script...",
+      "Encrypting payload with AES-256...",
+      "Routing through ShadowProxy v3.4...",
+      "Scanning Discord endpoints...",
+      "Generating quantum-safe token...",
+      "Secure link injection prepared...",
     ];
-    const langs = ["en-US", "ar-EG", "fr-FR", "de-DE", "es-ES"];
-    const terminal = document.getElementById("terminal");
-    const beep = document.getElementById("beep");
-    document.documentElement.lang = langs[Math.floor(Math.random() * langs.length)];
 
-    function logFakeTerminal() {
-      let index = 0;
-      beep.play();
+    const discordLinks = [
+      "aHR0cHM6Ly9kaXNjb3JkLmdnL3lkWHRmQmRhZzY=",
+      "aHR0cHM6Ly9kaXNjb3JkLmdnL2JKVWFBWUdld0Q=",
+      "aHR0cHM6Ly9kaXNjb3JkLmdnL1VLVzQ5V0t2M3o=",
+      "aHR0cHM6Ly9kaXNjb3JkLmdnLzNySHNINzJoYWI=",
+      "aHR0cHM6Ly9kaXNjb3JkLmdnL2pmc2dBODN6WGg=",
+      "aHR0cHM6Ly9kaXNjb3JkLmdnLzV5ajU4Y25na3g=",
+      "aHR0cHM6Ly9kaXNjb3JkLmdnL21KRmJEbWFtdmo=",
+      "aHR0cHM6Ly9kaXNjb3JkLmdnL21LbWo5ZVVkM3g="
+    ];
+
+    function decodeBase64(b64) {
+      return atob(b64);
+    }
+
+    function logLine(text) {
+      const consoleEl = document.getElementById('console');
+      consoleEl.textContent += text + "\n";
+      consoleEl.scrollTop = consoleEl.scrollHeight;
+    }
+
+    function getVisitInfo() {
+      let visits = parseInt(localStorage.getItem("visits") || "0") + 1;
+      localStorage.setItem("visits", visits);
+      return visits;
+    }
+
+    function startConsoleSequence() {
+      const visitCount = getVisitInfo();
+      const now = new Date();
+      const seed = now.getTime() + visitCount;
+      const location = ["Cairo", "Alexandria", "Aswan", "Marsamatrouh", "Tanta"][Math.floor(Math.random() * 5)];
+
+      logLine(`> Session Time: ${now.toISOString()}`);
+      logLine(`> Visit Count: ${visitCount}`);
+      logLine(`> Location spoofed: ${location}`);
+      logLine(`> Seeding secure entropy key: ${seed}`);
+      logLine(`> Establishing secure tunnel...`);
+
+      let i = 0;
       const interval = setInterval(() => {
-        if (index < messages.length) {
-          terminal.textContent += messages[index++] + "\n";
-        } else {
+        const msg = fakeMessages[Math.floor(Math.random() * fakeMessages.length)];
+        logLine("[*] " + msg);
+        i++;
+        if (i > 12 + Math.floor(Math.random() * 4)) {
           clearInterval(interval);
           setTimeout(() => {
-            const links = [
-              "aHR0cHM6Ly9kaXNjb3JkLmdnL3JQTFdIQ25KZ2E=",
-              "aHR0cHM6Ly9kaXNjb3JkLmdnL2JZb2VEeWZEV2s=",
-              "aHR0cHM6Ly9kaXNjb3JkLmdnL3ZvZE5CcU5Ca28="
-            ];
-            const link = atob(links[Math.floor(Math.random() * links.length)]);
-            window.location.href = link;
-          }, 1000); // 1 second fake load
+            const link = decodeBase64(discordLinks[Math.floor(Math.random() * discordLinks.length)]);
+            logLine("> Redirecting to secure Discord link...");
+            window.location.href = link; // الانتقال إلى رابط Discord
+          }, 1000); // تأخير قبل الانتقال
         }
-      }, 80);
+      }, 100); // كل 100 مللي ثانية رسالة جديدة
     }
 
-    logFakeTerminal();
+    // Start sequence
+    startConsoleSequence();
 
-    window.addEventListener("resize", () => {
+    // Resize canvas
+    window.addEventListener('resize', () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     });
+
+    // Optional: Enable sound on click
+    document.body.addEventListener("click", () => {
+      document.getElementById("buzz").muted = false;
+    });
+
+    // Apply random background color
+    document.body.style.backgroundColor = randomBackgroundColor;
+    document.getElementById('console').style.color = randomColor;
+
+    // Apply random font size for console text
+    const fontSizeOptions = [14, 16, 18, 20, 22];
+    const randomFontSize = fontSizeOptions[Math.floor(Math.random() * fontSizeOptions.length)];
+    document.getElementById('console').style.fontSize = randomFontSize + "px";
+
+    // Randomize the terminal name each time
+    const terminalNames = ["Shadow Terminal", "Encrypted Terminal", "Secure Channel", "Redacted Hub", "Cloak Gateway"];
+    const randomTerminalName = terminalNames[Math.floor(Math.random() * terminalNames.length)];
+
+    // Change the terminal header dynamically
+    const header = document.createElement('h1');
+    header.textContent = randomTerminalName;
+    document.body.appendChild(header);
+
+    // Add random behavior for matrix effect (speed, font size)
+    const fontSizeMatrix = Math.floor(Math.random() * 14) + 12;
+    const columns = canvas.width / fontSizeMatrix;
+    const drops = Array.from({ length: columns }, () => Math.random() * canvas.height);
+
+    function drawMatrix() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = randomColor;
+      ctx.font = `${fontSizeMatrix}px monospace`;
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSizeMatrix, drops[i] * fontSizeMatrix);
+        if (drops[i] * fontSizeMatrix > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+
+      requestAnimationFrame(drawMatrix);
+    }
+
+    drawMatrix();
   </script>
 </body>
 </html>
