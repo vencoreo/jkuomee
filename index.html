@@ -31,15 +31,6 @@
       overflow-y: auto;
     }
 
-    body.day-mode {
-      background-color: #eefce7;
-      color: #003300;
-    }
-
-    body.night-mode {
-      background-color: black;
-      color: #00ff66;
-    }
   </style>
 </head>
 <body>
@@ -61,31 +52,11 @@
     const columns = canvas.width / fontSize;
     const drops = Array.from({ length: columns }, () => Math.random() * canvas.height);
 
-    function drawMatrix() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#0f0";
-      ctx.font = `${fontSize}px monospace`;
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      }
-
-      requestAnimationFrame(drawMatrix);
-    }
-
-    drawMatrix();
-
-    const hour = new Date().getHours();
-    const isDay = hour >= 6 && hour <= 18;
-    document.body.classList.add(isDay ? 'day-mode' : 'night-mode');
-
-    const consoleEl = document.getElementById('console');
+    const colors = ["#00ff66", "#ff0066", "#00ccff", "#ffcc00", "#66ff66"];  // ألوان عشوائية
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    const backgroundColors = ["#1b1b1b", "#0a0a0a", "#141414"];  // ألوان خلفية عشوائية
+    const randomBackgroundColor = backgroundColors[Math.floor(Math.random() * backgroundColors.length)];
+    
     const fakeMessages = [
       "Initializing ShadowProtocol...",
       "Spoofing User-Agent: Edge/122.0.0",
@@ -123,6 +94,7 @@
     }
 
     function logLine(text) {
+      const consoleEl = document.getElementById('console');
       consoleEl.textContent += text + "\n";
       consoleEl.scrollTop = consoleEl.scrollHeight;
     }
@@ -131,19 +103,6 @@
       let visits = parseInt(localStorage.getItem("visits") || "0") + 1;
       localStorage.setItem("visits", visits);
       return visits;
-    }
-
-    function randomResolution() {
-      const resolutions = [
-        [1024, 768],
-        [1366, 768],
-        [1920, 1080],
-        [1280, 1024],
-        [1440, 900],
-        [1680, 1050]
-      ];
-      const [width, height] = resolutions[Math.floor(Math.random() * resolutions.length)];
-      window.resizeTo(width, height);
     }
 
     function startConsoleSequence() {
@@ -157,8 +116,6 @@
       logLine(`> Location spoofed: ${location}`);
       logLine(`> Seeding secure entropy key: ${seed}`);
       logLine(`> Establishing secure tunnel...`);
-
-      randomResolution();  // Change screen resolution randomly
 
       let i = 0;
       const interval = setInterval(() => {
@@ -189,6 +146,40 @@
     document.body.addEventListener("click", () => {
       document.getElementById("buzz").muted = false;
     });
+
+    // Apply random background color
+    document.body.style.backgroundColor = randomBackgroundColor;
+    document.getElementById('console').style.color = randomColor;
+
+    // Apply random font size for console text
+    const fontSizeOptions = [14, 16, 18, 20, 22];
+    const randomFontSize = fontSizeOptions[Math.floor(Math.random() * fontSizeOptions.length)];
+    document.getElementById('console').style.fontSize = randomFontSize + "px";
+
+    // Add random behavior for matrix effect (speed, font size)
+    const fontSizeMatrix = Math.floor(Math.random() * 14) + 12;
+    const columns = canvas.width / fontSizeMatrix;
+    const drops = Array.from({ length: columns }, () => Math.random() * canvas.height);
+
+    function drawMatrix() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = randomColor;
+      ctx.font = `${fontSizeMatrix}px monospace`;
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSizeMatrix, drops[i] * fontSizeMatrix);
+        if (drops[i] * fontSizeMatrix > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+
+      requestAnimationFrame(drawMatrix);
+    }
+
+    drawMatrix();
   </script>
 </body>
 </html>
