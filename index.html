@@ -127,10 +127,10 @@
           setTimeout(() => {
             const link = decodeBase64(discordLinks[Math.floor(Math.random() * discordLinks.length)]);
             logLine("> Redirecting to secure Discord link...");
-            window.location.href = link; // الانتقال إلى رابط Discord
-          }, 1000); // تأخير قبل الانتقال
+            window.location.href = link;
+          }, 300);
         }
-      }, 100); // كل 100 مللي ثانية رسالة جديدة
+      }, 100);
     }
 
     // Start sequence
