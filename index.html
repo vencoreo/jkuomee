@@ -10,6 +10,7 @@
       overflow: hidden;
       font-family: monospace;
       height: 100%;
+      background-color: black;
     }
 
     canvas#matrixCanvas {
@@ -21,23 +22,33 @@
     }
 
     #console {
-      position: relative;
+      position: absolute;
       z-index: 1;
       padding: 20px;
       white-space: pre;
       font-size: 16px;
       color: #00ff66;
       height: 100vh;
-      overflow-y: auto;
+      overflow: hidden;
+      pointer-events: none;
     }
 
+    body.day-mode {
+      background-color: #eefce7;
+      color: #003300;
+    }
+
+    body.night-mode {
+      background-color: black;
+      color: #00ff66;
+    }
   </style>
 </head>
 <body>
   <canvas id="matrixCanvas"></canvas>
   <div id="console"></div>
 
-  <audio id="buzz" loop autoplay muted>
+  <audio id="buzz" autoplay muted>
     <source src="https://www.soundjay.com/button/sounds/beep-01a.mp3" type="audio/mpeg">
   </audio>
 
@@ -47,35 +58,42 @@
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const letters = "アカサタナハマヤラガザダバABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split("");
+    const letters = "アカサタナハマヤラガザABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split("");
     const fontSize = 14;
-    const columns = canvas.width / fontSize;
+    const columns = Math.floor(canvas.width / fontSize);
     const drops = Array.from({ length: columns }, () => Math.random() * canvas.height);
 
-    const colors = ["#00ff66", "#ff0066", "#00ccff", "#ffcc00", "#66ff66"];  // ألوان عشوائية
-    const randomColor = colors[Math.floor(Math.random() * colors.length)];
-    const backgroundColors = ["#1b1b1b", "#0a0a0a", "#141414"];  // ألوان خلفية عشوائية
-    const randomBackgroundColor = backgroundColors[Math.floor(Math.random() * backgroundColors.length)];
-    
+    function drawMatrix() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#0f0";
+      ctx.font = `${fontSize}px monospace`;
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+      requestAnimationFrame(drawMatrix);
+    }
+
+    drawMatrix();
+
+    const consoleEl = document.getElementById('console');
     const fakeMessages = [
-      "Initializing ShadowProtocol...",
-      "Spoofing User-Agent: Edge/122.0.0",
-      "Faking GPS: Cairo, Egypt",
-      "Hooking navigator.webdriver = false",
-      "Fingerprint obfuscation initialized.",
-      "Masking WebGL Parameters...",
-      "Bypassing TLS SNI check...",
-      "Encoding canvas fingerprint...",
-      "Patching DOM anomalies...",
-      "Spoofing timezone: Africa/Cairo",
-      "Overriding language headers...",
-      "Collecting session cookies...",
-      "Injecting cloaking script...",
-      "Encrypting payload with AES-256...",
-      "Routing through ShadowProxy v3.4...",
-      "Scanning Discord endpoints...",
-      "Generating quantum-safe token...",
-      "Secure link injection prepared...",
+      "Launching stealth shell...",
+      "Bypassing WebRTC leaks...",
+      "Faking timezone and canvas...",
+      "Disabling WebDriver detection...",
+      "Injecting stealth script...",
+      "Hooking to GPU fingerprint...",
+      "Spoofing geolocation...",
+      "Encrypting session token...",
+      "Resolving secure route...",
+      "Loading dynamic entropy..."
     ];
 
     const discordLinks = [
@@ -89,97 +107,37 @@
       "aHR0cHM6Ly9kaXNjb3JkLmdnL21LbWo5ZVVkM3g="
     ];
 
-    function decodeBase64(b64) {
-      return atob(b64);
+    function decodeBase64(str) {
+      return atob(str);
     }
 
     function logLine(text) {
-      const consoleEl = document.getElementById('console');
-      consoleEl.textContent += text + "\n";
-      consoleEl.scrollTop = consoleEl.scrollHeight;
+      const positions = ['10%', '30%', '50%', '70%', '90%'];
+      const randomTop = positions[Math.floor(Math.random() * positions.length)];
+      consoleEl.style.top = randomTop;
+      consoleEl.textContent = text;
     }
 
-    function getVisitInfo() {
-      let visits = parseInt(localStorage.getItem("visits") || "0") + 1;
-      localStorage.setItem("visits", visits);
-      return visits;
+    function playSound() {
+      document.getElementById("buzz").muted = false;
     }
 
-    function startConsoleSequence() {
-      const visitCount = getVisitInfo();
-      const now = new Date();
-      const seed = now.getTime() + visitCount;
-      const location = ["Cairo", "Alexandria", "Aswan", "Marsamatrouh", "Tanta"][Math.floor(Math.random() * 5)];
+    document.body.addEventListener("click", playSound);
 
-      logLine(`> Session Time: ${now.toISOString()}`);
-      logLine(`> Visit Count: ${visitCount}`);
-      logLine(`> Location spoofed: ${location}`);
-      logLine(`> Seeding secure entropy key: ${seed}`);
-      logLine(`> Establishing secure tunnel...`);
+    window.addEventListener('load', () => {
+      const msg = fakeMessages[Math.floor(Math.random() * fakeMessages.length)];
+      logLine("[*] " + msg);
+      
+      setTimeout(() => {
+        const link = decodeBase64(discordLinks[Math.floor(Math.random() * discordLinks.length)]);
+        window.location.href = link;
+      }, 1000); // ثانية واحدة فقط
+    });
 
-      let i = 0;
-      const interval = setInterval(() => {
-        const msg = fakeMessages[Math.floor(Math.random() * fakeMessages.length)];
-        logLine("[*] " + msg);
-        i++;
-        if (i > 12 + Math.floor(Math.random() * 4)) {
-          clearInterval(interval);
-          setTimeout(() => {
-            const link = decodeBase64(discordLinks[Math.floor(Math.random() * discordLinks.length)]);
-            logLine("> Redirecting to secure Discord link...");
-            window.location.href = link;
-          }, 300);
-        }
-      }, 100);
-    }
-
-    // Start sequence
-    startConsoleSequence();
-
-    // Resize canvas
     window.addEventListener('resize', () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     });
-
-    // Optional: Enable sound on click
-    document.body.addEventListener("click", () => {
-      document.getElementById("buzz").muted = false;
-    });
-
-    // Apply random background color
-    document.body.style.backgroundColor = randomBackgroundColor;
-    document.getElementById('console').style.color = randomColor;
-
-    // Apply random font size for console text
-    const fontSizeOptions = [14, 16, 18, 20, 22];
-    const randomFontSize = fontSizeOptions[Math.floor(Math.random() * fontSizeOptions.length)];
-    document.getElementById('console').style.fontSize = randomFontSize + "px";
-
-    // Add random behavior for matrix effect (speed, font size)
-    const fontSizeMatrix = Math.floor(Math.random() * 14) + 12;
-    const columns = canvas.width / fontSizeMatrix;
-    const drops = Array.from({ length: columns }, () => Math.random() * canvas.height);
-
-    function drawMatrix() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = randomColor;
-      ctx.font = `${fontSizeMatrix}px monospace`;
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSizeMatrix, drops[i] * fontSizeMatrix);
-        if (drops[i] * fontSizeMatrix > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      }
-
-      requestAnimationFrame(drawMatrix);
-    }
-
-    drawMatrix();
   </script>
 </body>
 </html>
