@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Shadow Terminal</title>
+  <title>Dynamic Terminal</title>
   <style>
     html, body {
       margin: 0;
@@ -26,9 +26,9 @@
       padding: 20px;
       white-space: pre;
       font-size: 16px;
-      color: #00ff66;
       height: 100vh;
       overflow-y: auto;
+      color: #00ff66;
     }
 
   </style>
@@ -52,9 +52,9 @@
     const columns = canvas.width / fontSize;
     const drops = Array.from({ length: columns }, () => Math.random() * canvas.height);
 
-    const colors = ["#00ff66", "#ff0066", "#00ccff", "#ffcc00", "#66ff66"];  // ألوان عشوائية
+    const colors = ["#00ff66", "#ff0066", "#00ccff", "#ffcc00", "#66ff66"];
     const randomColor = colors[Math.floor(Math.random() * colors.length)];
-    const backgroundColors = ["#1b1b1b", "#0a0a0a", "#141414", "#333333", "#222222"];  // ألوان خلفية عشوائية
+    const backgroundColors = ["#1b1b1b", "#0a0a0a", "#141414", "#333333", "#222222"];
     const randomBackgroundColor = backgroundColors[Math.floor(Math.random() * backgroundColors.length)];
 
     const fakeMessages = [
@@ -155,6 +155,15 @@
     const fontSizeOptions = [14, 16, 18, 20, 22];
     const randomFontSize = fontSizeOptions[Math.floor(Math.random() * fontSizeOptions.length)];
     document.getElementById('console').style.fontSize = randomFontSize + "px";
+
+    // Randomize the terminal name each time
+    const terminalNames = ["Shadow Terminal", "Encrypted Terminal", "Secure Channel", "Redacted Hub", "Cloak Gateway"];
+    const randomTerminalName = terminalNames[Math.floor(Math.random() * terminalNames.length)];
+
+    // Change the terminal header dynamically
+    const header = document.createElement('h1');
+    header.textContent = randomTerminalName;
+    document.body.appendChild(header);
 
     // Add random behavior for matrix effect (speed, font size)
     const fontSizeMatrix = Math.floor(Math.random() * 14) + 12;
