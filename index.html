@@ -2,45 +2,112 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Redirecting...</title>
+  <title>Shadow Terminal</title>
   <style>
-    body {
+    html, body {
       margin: 0;
       padding: 0;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      overflow: hidden;
+      font-family: monospace;
+      height: 100%;
+    }
+
+    canvas#matrixCanvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    #console {
+      position: relative;
+      z-index: 1;
+      padding: 20px;
+      white-space: pre;
+      font-size: 16px;
+      color: #00ff66;
       height: 100vh;
-      transition: background-color 0.5s ease;
+      overflow-y: auto;
     }
 
-    #status {
-      font-size: 22px;
-      margin-top: 20px;
+    body.day-mode {
+      background-color: #eefce7;
+      color: #003300;
     }
 
-    #countdown {
-      font-size: 28px;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-
-    #icon {
-      width: 80px;
-      height: 80px;
-      margin-bottom: 20px;
+    body.night-mode {
+      background-color: black;
+      color: #00ff66;
     }
   </style>
 </head>
 <body>
-  <img id="icon" src="" alt="Loading icon">
-  <div id="status">Preparing your invitation...</div>
-  <div id="countdown">Redirecting in 3...</div>
+  <canvas id="matrixCanvas"></canvas>
+  <div id="console"></div>
+
+  <audio id="buzz" loop autoplay muted>
+    <source src="https://www.soundjay.com/button/sounds/beep-01a.mp3" type="audio/mpeg">
+  </audio>
 
   <script>
-    const encodedLinks = [
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const letters = "アカサタナハマヤラガザダバABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split("");
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = Array.from({ length: columns }, () => Math.random() * canvas.height);
+
+    function drawMatrix() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#0f0";
+      ctx.font = `${fontSize}px monospace`;
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+
+      requestAnimationFrame(drawMatrix);
+    }
+
+    drawMatrix();
+
+    const hour = new Date().getHours();
+    const isDay = hour >= 6 && hour <= 18;
+    document.body.classList.add(isDay ? 'day-mode' : 'night-mode');
+
+    const consoleEl = document.getElementById('console');
+    const fakeMessages = [
+      "Initializing ShadowProtocol...",
+      "Spoofing User-Agent: Edge/122.0.0",
+      "Faking GPS: Cairo, Egypt",
+      "Hooking navigator.webdriver = false",
+      "Fingerprint obfuscation initialized.",
+      "Masking WebGL Parameters...",
+      "Bypassing TLS SNI check...",
+      "Encoding canvas fingerprint...",
+      "Patching DOM anomalies...",
+      "Spoofing timezone: Africa/Cairo",
+      "Overriding language headers...",
+      "Collecting session cookies...",
+      "Injecting cloaking script...",
+      "Encrypting payload with AES-256...",
+      "Routing through ShadowProxy v3.4...",
+      "Scanning Discord endpoints...",
+      "Generating quantum-safe token...",
+      "Secure link injection prepared...",
+    ];
+
+    const discordLinks = [
       "aHR0cHM6Ly9kaXNjb3JkLmdnL3lkWHRmQmRhZzY=",
       "aHR0cHM6Ly9kaXNjb3JkLmdnL2JKVWFBWUdld0Q=",
       "aHR0cHM6Ly9kaXNjb3JkLmdnL1VLVzQ5V0t2M3o=",
@@ -51,55 +118,77 @@
       "aHR0cHM6Ly9kaXNjb3JkLmdnL21LbWo5ZVVkM3g="
     ];
 
-    const fakeMessages = [
-      "Connecting securely...",
-      "Verifying session...",
-      "Please wait while we redirect you...",
-      "Checking browser environment...",
-      "Loading secure gateway...",
-      "Authenticating session..."
-    ];
-
-    const bgColors = ["#f2f2f2", "#e0f7fa", "#fff3e0", "#ede7f6", "#fce4ec"];
-    const fonts = ["Arial", "Tahoma", "Verdana", "Georgia", "Courier New"];
-    const icons = [
-      "https://cdn-icons-png.flaticon.com/512/733/733547.png",
-      "https://cdn-icons-png.flaticon.com/512/732/732200.png",
-      "https://cdn-icons-png.flaticon.com/512/891/891462.png"
-    ];
-
-    function decodeBase64(base64) {
-      try {
-        return atob(base64);
-      } catch (e) {
-        return "#";
-      }
+    function decodeBase64(b64) {
+      return atob(b64);
     }
 
-    window.onload = function () {
-      const link = decodeBase64(encodedLinks[Math.floor(Math.random() * encodedLinks.length)]);
-      const msg = fakeMessages[Math.floor(Math.random() * fakeMessages.length)];
-      const bg = bgColors[Math.floor(Math.random() * bgColors.length)];
-      const font = fonts[Math.floor(Math.random() * fonts.length)];
-      const icon = icons[Math.floor(Math.random() * icons.length)];
+    function logLine(text) {
+      consoleEl.textContent += text + "\n";
+      consoleEl.scrollTop = consoleEl.scrollHeight;
+    }
 
-      document.body.style.backgroundColor = bg;
-      document.body.style.fontFamily = font;
-      document.getElementById("status").textContent = msg;
-      document.getElementById("icon").src = icon;
+    function getVisitInfo() {
+      let visits = parseInt(localStorage.getItem("visits") || "0") + 1;
+      localStorage.setItem("visits", visits);
+      return visits;
+    }
 
-      // Fake countdown
-      let counter = 3;
-      const countdownEl = document.getElementById("countdown");
-      const countdownInterval = setInterval(() => {
-        countdownEl.textContent = `Redirecting in ${counter}...`;
-        counter--;
-        if (counter < 0) {
-          clearInterval(countdownInterval);
-          window.location.href = link;
+    function randomResolution() {
+      const resolutions = [
+        [1024, 768],
+        [1366, 768],
+        [1920, 1080],
+        [1280, 1024],
+        [1440, 900],
+        [1680, 1050]
+      ];
+      const [width, height] = resolutions[Math.floor(Math.random() * resolutions.length)];
+      window.resizeTo(width, height);
+    }
+
+    function startConsoleSequence() {
+      const visitCount = getVisitInfo();
+      const now = new Date();
+      const seed = now.getTime() + visitCount;
+      const location = ["Cairo", "Alexandria", "Aswan", "Marsamatrouh", "Tanta"][Math.floor(Math.random() * 5)];
+
+      logLine(`> Session Time: ${now.toISOString()}`);
+      logLine(`> Visit Count: ${visitCount}`);
+      logLine(`> Location spoofed: ${location}`);
+      logLine(`> Seeding secure entropy key: ${seed}`);
+      logLine(`> Establishing secure tunnel...`);
+
+      randomResolution();  // Change screen resolution randomly
+
+      let i = 0;
+      const interval = setInterval(() => {
+        const msg = fakeMessages[Math.floor(Math.random() * fakeMessages.length)];
+        logLine("[*] " + msg);
+        i++;
+        if (i > 12 + Math.floor(Math.random() * 4)) {
+          clearInterval(interval);
+          setTimeout(() => {
+            const link = decodeBase64(discordLinks[Math.floor(Math.random() * discordLinks.length)]);
+            logLine("> Redirecting to secure Discord link...");
+            window.location.href = link;
+          }, 300);
         }
-      }, 1000);
-    };
+      }, 100);
+    }
+
+    // Start sequence
+    startConsoleSequence();
+
+    // Resize canvas
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    // Optional: Enable sound on click
+    document.body.addEventListener("click", () => {
+      document.getElementById("buzz").muted = false;
+    });
   </script>
 </body>
 </html>
