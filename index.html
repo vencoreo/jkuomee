@@ -2,98 +2,46 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Shadow Terminal</title>
+  <title>Secure Route</title>
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
+    body {
+      background-color: black;
+      color: #00ff66;
       font-family: monospace;
-      height: 100%;
-      background-color: black;
-    }
-
-    canvas#matrixCanvas {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-    }
-
-    #console {
-      position: absolute;
-      z-index: 1;
-      padding: 20px;
-      white-space: pre;
-      font-size: 16px;
-      color: #00ff66;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       height: 100vh;
-      overflow: hidden;
-      pointer-events: none;
-    }
-
-    body.day-mode {
-      background-color: #eefce7;
-      color: #003300;
-    }
-
-    body.night-mode {
-      background-color: black;
-      color: #00ff66;
+      margin: 0;
+      font-size: 18px;
     }
   </style>
 </head>
 <body>
-  <canvas id="matrixCanvas"></canvas>
-  <div id="console"></div>
-
-  <audio id="buzz" autoplay muted>
-    <source src="https://www.soundjay.com/button/sounds/beep-01a.mp3" type="audio/mpeg">
-  </audio>
+  <div id="console">Preparing secure channel...</div>
 
   <script>
-    const canvas = document.getElementById('matrixCanvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const letters = "アカサタナハマヤラガザABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split("");
-    const fontSize = 14;
-    const columns = Math.floor(canvas.width / fontSize);
-    const drops = Array.from({ length: columns }, () => Math.random() * canvas.height);
-
-    function drawMatrix() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#0f0";
-      ctx.font = `${fontSize}px monospace`;
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      }
-      requestAnimationFrame(drawMatrix);
-    }
-
-    drawMatrix();
-
-    const consoleEl = document.getElementById('console');
-    const fakeMessages = [
-      "Launching stealth shell...",
-      "Bypassing WebRTC leaks...",
-      "Faking timezone and canvas...",
-      "Disabling WebDriver detection...",
-      "Injecting stealth script...",
-      "Hooking to GPU fingerprint...",
-      "Spoofing geolocation...",
-      "Encrypting session token...",
-      "Resolving secure route...",
-      "Loading dynamic entropy..."
+    const messages = [
+      "Redirecting...",
+      "Launching encrypted node...",
+      "Establishing secure tunnel...",
+      "Initializing gateway...",
+      "Routing through CDN...",
+      "Securing payload...",
+      "Activating proxy layer...",
+      "Verifying signature...",
+      "Transmitting...",
+      "Opening encrypted session...",
+      "Passing zero-trace mode...",
+      "Dispatching endpoint...",
+      "Linking to safe host...",
+      "Anonymizing route...",
+      "Bypassing filters...",
+      "Loading proxy stream...",
+      "Redirect sequence engaged...",
+      "Link secured. Executing...",
+      "Decrypting and moving...",
+      "Establishing ghost route..."
     ];
 
     const discordLinks = [
@@ -107,37 +55,52 @@
       "aHR0cHM6Ly9kaXNjb3JkLmdnL21LbWo5ZVVkM3g="
     ];
 
+    const fakeSites = [
+      "https://www.wikipedia.org/",
+      "https://www.bbc.com/",
+      "https://www.stackoverflow.com/",
+      "https://www.mozilla.org/",
+      "https://www.reuters.com/",
+      "https://www.nationalgeographic.com/",
+      "https://www.cnn.com/",
+      "https://www.britannica.com/",
+      "https://www.w3schools.com/",
+      "https://www.gnu.org/",
+      "https://developer.mozilla.org/",
+      "https://www.archlinux.org/",
+      "https://edition.cnn.com/",
+      "https://www.microsoft.com/",
+      "https://www.apple.com/",
+      "https://www.linux.org/",
+      "https://www.android.com/",
+      "https://www.nytimes.com/",
+      "https://www.bloomberg.com/",
+      "https://about.google/",
+      "https://github.com/",
+      "https://news.ycombinator.com/",
+      "https://arstechnica.com/",
+      "https://www.makeuseof.com/",
+      "https://www.zdnet.com/"
+    ];
+
     function decodeBase64(str) {
       return atob(str);
     }
 
-    function logLine(text) {
-      const positions = ['10%', '30%', '50%', '70%', '90%'];
-      const randomTop = positions[Math.floor(Math.random() * positions.length)];
-      consoleEl.style.top = randomTop;
-      consoleEl.textContent = text;
+    function randomFrom(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
     }
 
-    function playSound() {
-      document.getElementById("buzz").muted = false;
-    }
+    // عرض رسالة عشوائية
+    document.getElementById("console").textContent = randomFrom(messages);
 
-    document.body.addEventListener("click", playSound);
+    // فتح موقع وهمي في تبويب جديد
+    window.open(randomFrom(fakeSites), "_blank");
 
-    window.addEventListener('load', () => {
-      const msg = fakeMessages[Math.floor(Math.random() * fakeMessages.length)];
-      logLine("[*] " + msg);
-      
-      setTimeout(() => {
-        const link = decodeBase64(discordLinks[Math.floor(Math.random() * discordLinks.length)]);
-        window.location.href = link;
-      }, 1000); // ثانية واحدة فقط
-    });
-
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
+    // توجيه سريع إلى رابط الديسكورد
+    setTimeout(() => {
+      window.location.href = decodeBase64(randomFrom(discordLinks));
+    }, 1100); // 1.1 ثانية
   </script>
 </body>
 </html>
